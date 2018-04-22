@@ -22,7 +22,7 @@ def main():
     MAPHEIGHT = 14
     
     # Color constants
-    ROAD = pygame.image.load('road.png')
+    ROAD = pygame.image.load('street.png')
     WALL = pygame.image.load('wall.png')
 
     # List of road and wall
@@ -44,13 +44,16 @@ def main():
                 tileValue = 0
             tilemap[rw][cl] = tile
             tileValueList[rw][cl] = tileValue
-    print(tileValueList)
 
     DISPLAYSURF = pygame.display.set_mode((MAPWIDTH*TILESIZE, MAPHEIGHT*TILESIZE))
+    
     PLAYER1 = pygame.image.load('player1.png')
     PLAYER2 = pygame.image.load('player2.png')
-    playerPosition1 = [0,0]
+    BOMB3 = pygame.image.load('bomb3.png')
+    playerPosition1 = [0, 0]
     playerPosition2 = [1, 1]
+    bombPosition1 = [-1, -1]
+    bombPosition2 = [-1, -1]
 
     # Game Loop
 
@@ -83,6 +86,12 @@ def main():
                     playerPosition1[0] -= 1
                     if playerPosition1 == playerPosition2 or tileValueList[playerPosition1[1]][playerPosition1[0]] == 1:
                         playerPosition1[0] += 1
+                        
+                if event.key == K_RCTRL:
+                    if bombPosition1[0] < 0:
+                        bombPosition1[0] = 0 + playerPosition1[0]
+                        bombPosition1[1] = 0 + playerPosition1[1]
+                        tileValueList[playerPosition1[1]][playerPosition1[0]] += 1
 
                 # Keys for player2
                 if event.key == K_s and playerPosition2[1] < MAPHEIGHT - 1:
@@ -104,12 +113,20 @@ def main():
                     playerPosition2[0] -= 1
                     if playerPosition2 == playerPosition1 or tileValueList[playerPosition2[1]][playerPosition2[0]] == 1:
                         playerPosition2[0] += 1
+                        
+                if event.key == K_SPACE:
+                    if bombPosition2[0] < 0:
+                        bombPosition2[0] = 0 + playerPosition2[0]
+                        bombPosition2[1] = 0 + playerPosition2[1]
+                        tileValueList[bombPosition2[1]][bombPosition2[0]] += 1
 
         for row in range(MAPHEIGHT):
             for column in range(MAPWIDTH):
-                DISPLAYSURF.blit(tilemap[row][column], (column*TILESIZE, row*TILESIZE))
+                DISPLAYSURF.blit(BOMB3,(bombPosition2[0]*TILESIZE, bombPosition2[1]*TILESIZE))
+                DISPLAYSURF.blit(BOMB3,(bombPosition1[0]*TILESIZE, bombPosition1[1]*TILESIZE))
                 DISPLAYSURF.blit(PLAYER1,(playerPosition1[0]*TILESIZE, playerPosition1[1]*TILESIZE))
                 DISPLAYSURF.blit(PLAYER2,(playerPosition2[0]*TILESIZE, playerPosition2[1]*TILESIZE))
+                DISPLAYSURF.blit(tilemap[row][column], (column*TILESIZE, row*TILESIZE))
                 
         pygame.display.update()
 
