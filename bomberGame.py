@@ -54,6 +54,7 @@ def main():
     playerPosition2 = [1, 1]
     bombPosition1 = [-1, -1]
     bombPosition2 = [-1, -1]
+    value = 5
 
     # Game Loop
 
@@ -67,7 +68,7 @@ def main():
 
                 # Keys for player1
                 if event.key == K_DOWN and playerPosition1[1] < MAPHEIGHT - 1 :
-                    playerPosition1[1] += 1
+                    playerPosition1[1] = playerPosition1[1] + 1
                     # Check collisions
                     if playerPosition1 == playerPosition2 or tileValueList[playerPosition1[1]][playerPosition1[0]] == 1:
                         playerPosition1[1] -= 1
